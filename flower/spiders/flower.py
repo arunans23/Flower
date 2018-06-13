@@ -12,7 +12,7 @@ class FlowerSpider(scrapy.Spider):
     def start_requests(self):
         start_url = os.environ.get('crawl_url')
         yield scrapy.Request(url=start_url, callback=self.parse)
-        for i in range(2,10):
+        for i in range(2,500):
             yield scrapy.Request(url=start_url + "&page=" + str(i) , callback=self.parse)
 
     def parse(self, response):
@@ -33,7 +33,13 @@ class FlowerSpider(scrapy.Spider):
 
                     story = re.sub(r'\n\s*\n', '\n\n', story)
                     story = re.sub(r'OA_show("postbit");', '', story)
+                    page = re.sub('.*&+','',response.request.url)
+                    if(len(page)>8):
+                        page = "page=0"
                     print("*******************************************************")
+                    story = re.sub('Last.*',"",story)
+                    story = re.sub("The following+.*","",story)
                     with open('output.txt', 'a') as f:
+                        f.write(page)
                         f.write(story)
-                        # f.write("\n___________________________\n")
+                        f.write("\n                       **************************\n\n\n")
