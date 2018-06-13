@@ -1,0 +1,4 @@
+flower/etc
+output.txt
+flower/__pycache__
+flower/spiders/__pycache__
