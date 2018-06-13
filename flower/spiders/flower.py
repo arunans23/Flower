@@ -20,3 +20,14 @@ class FlowerSpider(scrapy.Spider):
 
     def parse(self, response):
         sel = Selector(response)
+        results = sel.select("//b")
+        for result in results:
+            #filtering name posts
+            names = result.select('.//font[contains(@color, "Purple")]').extract()
+            if(len(result.select(".//br"))>25 and len(names) == 0):
+                story = result.extract()
+                print("*******************************************************")
+                
+                with open('/home/isham/log2.txt', 'a') as f:
+                    f.write(story)
+                    
